@@ -1,137 +1,86 @@
-# 🛒 NovaCart — Full-Stack MERN E-Commerce Platform
+# NovaCart
 
-A feature-rich, scalable, and modern E-Commerce web application built using the **MERN Stack** (MongoDB, Express.js, React.js, Node.js). NovaCart provides a seamless shopping experience for users with secure authentication, global state management, media uploads, integrated online payments, and transactional email notifications.
+NovaCart is my full-stack shopping application. I built it with a React storefront and an Express API backed by MongoDB. Customers can browse products, manage a cart, sign in, and place orders; administrators can manage the catalog and orders.
 
----
+## What’s inside
 
-## 🚀 Features
+- **Storefront:** React, React Router, and Redux Toolkit for cart state
+- **API:** Node.js and Express
+- **Data:** MongoDB with Mongoose models
+- **Authentication:** JWT-based sessions and password hashing
+- **Admin tools:** Product, user, order, and analytics views
+- **Integrations:** Cloudinary image uploads, Gmail email, and Razorpay payments
 
-### 👤 User Capabilities
-- **Authentication & Authorization**: Secure User Registration and Login using JWT (JSON Web Tokens) and password hashing with `bcryptjs`.
-- **Product Browsing & Search**: Search, filter, and view detailed product information seamlessly.
-- **Cart & State Management**: Real-time shopping cart operations managed efficiently using **Redux Toolkit**.
-- **Payment Gateway Integration**: Online payment support powered by **Razorpay**.
-- **Email Notifications**: Transactional emails and order confirmations using **Nodemailer**.
-
-### 🛠 Tech Stack & Architecture
-- **Media Storage**: Cloud-based image upload and management handled by **Multer** and **Cloudinary**.
-- **Backend Architecture**: RESTful APIs powered by **Express.js** and **Mongoose** (MongoDB Object Modeling).
-- **Concurrent Development**: Simultaneous frontend and backend execution setup via `concurrently`.
-
----
-
-## 🛠️ Tech Stack
-
-| Domain | Technologies Used |
-| :--- | :--- |
-| **Frontend** | React.js, React Router DOM, Redux Toolkit, React Redux |
-| **Backend** | Node.js, Express.js (v5), Nodemailer, Cors, Dotenv |
-| **Database** | MongoDB, Mongoose |
-| **Authentication & Security** | JSON Web Token (JWT), bcryptjs |
-| **Payments & Media** | Razorpay API, Cloudinary, Multer |
-| **DevOps & Utilities** | Concurrently, Nodemon |
-
----
-
-## 📁 Project Structure
-
-```text
-NovaCart/
-├── frontend/             # React Client Application
-│   ├── src/
-│   │   ├── pages/        # Route Pages (Shop, Cart, Profile, etc.)
-│   │   └── redux/        # Redux Slices & Store Configuration
-│   └── package.json
-├── backend/              # Node.js Express API Server
-│   ├── server.js         # Entry Point
-│   ├── seed.js           # Database Seeder Script
-│   └── package.json
-├── package.json          # Root Scripts for Monorepo-style Management
-└── README.md
-```
-
----
-
-## ⚡ Getting Started Locally
-
-Follow these steps to set up and run NovaCart on your local system.
+## Run locally
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/) installed (v16+ recommended)
-- [MongoDB](https://www.mongodb.com/) running locally or a MongoDB Atlas connection string
-- A Cloudinary account (for image uploads)
-- A Razorpay developer account (for testing payments)
 
-### 1. Clone the Repository
-```bash
-git clone [https://github.com/dipanshu-s7/NovaCart.git](https://github.com/dipanshu-s7/NovaCart.git)
-cd NovaCart
-```
+- Node.js and npm
+- A MongoDB instance (local or hosted)
 
-### 2. Install Dependencies
-Run the root script to automatically install dependencies for root, backend, and frontend:
+### Install dependencies
+
+From the project root:
+
 ```bash
 npm run install-all
 ```
 
-### 3. Environment Variables Configuration
-Create a `.env` file inside the `backend/` directory and configure the following variables:
+### Configure the backend
+
+Copy `backend/.env.example` to `backend/.env`, then set the values for your environment:
 
 ```env
 PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
+NODE_ENV=development
+MONGO_URI=mongodb://127.0.0.1:27017/novacart
+JWT_SECRET=replace_with_a_long_random_secret
+FRONTEND_URL=http://localhost:3000
 
-# Cloudinary Configuration
+# Required only for the corresponding integrations
 CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret
-
-# Razorpay Configuration
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 RAZORPAY_KEY_ID=your_razorpay_key_id
 RAZORPAY_KEY_SECRET=your_razorpay_key_secret
-
-# Nodemailer Configuration
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_email_app_password
+GMAIL_USER=your_email@gmail.com
+GMAIL_PASS=your_gmail_app_password
 ```
 
-### 4. Seed Initial Data (Optional)
-To populate the database with dummy products, run:
-```bash
-npm run seed
-```
+`MONGO_URI` must point to a reachable database, and `JWT_SECRET` must be a private, random value. Cloudinary, Razorpay, and Gmail credentials are only needed when using those integrations. Keep `backend/.env` private; do not commit real credentials.
 
-### 5. Run the Application
-Start both the Backend API server and Frontend React app concurrently using a single command from the root directory:
+### Start the app
+
+From the project root:
 
 ```bash
 npm run dev
 ```
 
-- **Frontend Application**: `http://localhost:3000`
-- **Backend API Server**: `http://localhost:5000`
+The storefront runs at [http://localhost:3000](http://localhost:3000), and the API runs at [http://localhost:5000](http://localhost:5000). The frontend proxies `/api` requests to the backend.
 
----
+## Database seed data
 
-## 📜 Available Scripts
+To load the included demo catalog and admin account:
 
-In the root directory, you can run:
+```bash
+npm run seed
+```
 
-- `npm run install-all`: Installs all dependencies across root, backend, and frontend.
-- `npm run dev`: Starts backend (`localhost:5000`) and frontend (`localhost:3000`) simultaneously.
-- `npm run start:backend`: Runs the backend development server using `nodemon`.
-- `npm run start:frontend`: Runs the React frontend development server.
-- `npm run build`: Builds the frontend app for production.
+**Warning:** this command deletes all existing users and products in the configured database before inserting the demo data. Only run it on a disposable development database or after backing up data.
 
----
+The seeded admin account is `admin@novacart.com` with password `password123`. It is for local development only. Change or remove it before using the app in a shared or production environment.
 
-## 👤 Author
+## API collection
 
-**Deepanshu Suryavanshi**
-- GitHub: [@dipanshu-s7](https://github.com/dipanshu-s7)
+Import [`NovaCart_Postman_Collection.json`](./NovaCart_Postman_Collection.json) into Postman to try the authentication, product, order, payment, and admin endpoints.
 
----
+## Production note
 
-## 📄 License
-This project is open-source and available under the [ISC License](LICENSE).
+Set `NODE_ENV=production` when running the backend to serve the frontend build from `frontend/build`. Build the frontend with:
+
+```bash
+npm run build
+```
+
+Set production environment variables for the hosting platform and use a production MongoDB database. Never use the seeded admin credentials or development secrets in production.
